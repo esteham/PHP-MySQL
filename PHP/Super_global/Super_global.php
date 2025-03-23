@@ -4,7 +4,7 @@
 $_GET[]--To send or retrieve data from URL
 $_POST[]--To submit data through form
 $_PUT[]--For updating records/data through form submission
-$_REQUEST[]--To check the requset type as $_GET[] or $_POST[]
+$_REQUEST[]--To check the requset type as $_GET[], $_POST[] and $_COOKIE[]
 $_SESSION[]--To store session data
 $_COOKIE[]--To save the cookie value in browser
 $_FILES[]--For uploading files
