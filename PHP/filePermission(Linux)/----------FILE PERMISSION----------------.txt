@@ -1,0 +1,32 @@
+----------FILE PERMISSION----------------
+
+Linux/Unix based file permission has 3 types:
+
+Read--r: To read the file-4
+Write--w: To write in the file-2
+Execute--x: To run or execute the file-1
+
+There are three groups/user by whome the file permission can be set:
+
+User(Owner)
+Group
+World(Public user)
+
+PERMISSION                Binary                        Octal
+---							000							0
+--x                         001							1
+-w-                         010							2
+-wx							011							3
+r--                         100							4
+r-x							101							5
+rw-							110							6
+rwx							111							7
+
+user              rwx       111 						7
+Group             r-x       101                         5
+Public            r-x       101                         5
+
+Group-rw					110							6
+
+chmod()--To set file permission
+fileperms()--To check the file permission
