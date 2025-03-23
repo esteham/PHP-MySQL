@@ -33,26 +33,5 @@ echo "</pre>";
 
 echo "<br>";
 
-$today = mktime(0,0,0,3,23,2025);
-//echo $today;
-
-printf("There are %d days in March 2025", date("t",$today));
-echo "<br>";
-
-$futuredate = strtotime("+45 days");
-echo date("F d,Y", $futuredate);
-
-echo "<br>";
-
-$date = new DateTime();
-$date->setDate(2025,04,14);
-echo $date->format("F j,Y");
-
-echo "<br>";
-
-$terminationDate = new DateTime('2025-03-31');
-$todayDate = new DateTime('today');
-$span = $terminationDate->diff($todayDate);
-echo "Your subscription ends in {$span->format('%a')} days!";
 
 ?>
