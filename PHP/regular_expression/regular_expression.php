@@ -139,13 +139,13 @@ echo "<pre>";
 print_r($array);
 echo "</pre>";*/
 
-/*$string = "bat cat mat rat";
+$string = "bat cat mat rat";
 
 $exp = preg_match_all("/[^bc]at/",$string,$array);  //Returns the number of times the pattern was found in the string, which may also be 0
 
 echo "<pre>";
 print_r($array);
-echo "</pre>";*/
+echo "</pre>";
 
 $string = "bat cat mat rat 521 _";
 
@@ -154,4 +154,7 @@ $exp = preg_match_all("/\w/i",$string,$array);  //Returns the number of times th
 echo "<pre>";
 print_r($array);
 echo "</pre>";
-?>
+
+
+
+?>	
