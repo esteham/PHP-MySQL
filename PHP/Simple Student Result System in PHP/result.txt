@@ -1,0 +1,5 @@
+101=Xihad=65
+102=Mehjabin=85
+103=Mehbuba=90
+104=Mehedi=70
+105=Maohiba=99
