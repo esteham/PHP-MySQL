@@ -1,0 +1,17 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.wizard-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px dashed #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+#wizard-weather {
+  font-size: 1.2rem;
+  margin-top: 15px;
+}
