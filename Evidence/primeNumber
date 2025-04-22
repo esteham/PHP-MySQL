@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prime Number Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f0f0f0;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .prime {
+            color: green;
+        }
+        .not-prime {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Prime Number Checker</h2>
+
+<form method="POST">
+    <input type="number" name="number" placeholder="Enter a number" required>
+    <input type="submit" value="Check">
+</form>
+
+<?php
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $num = $_POST['number'];
+    $isPrime = true;
+
+    // Numbers less than or equal to 1 are not prime
+    if ($num <= 1) {
+        $isPrime = false;
+    } else {
+        // Check divisibility from 2 to square root of the number
+        for ($i = 2; $i <= sqrt($num); $i++) {
+            if ($num % $i == 0) {
+                $isPrime = false;
+                break;
+            }
+        }
+    }
+
+    // Display the result
+    echo "<div class='result'>";
+    if ($isPrime) {
+        echo "<span class='prime'>$num is a Prime Number.</span>";
+    } else {
+        echo "<span class='not-prime'>$num is Not a Prime Number.</span>";
+    }
+    echo "</div>";
+}
+?>
+
+</body>
+</html>
