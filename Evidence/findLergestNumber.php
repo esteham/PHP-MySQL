@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Find the largest number
     $largest = max($numbers);
 
-    echo "<h3 style='text-align: center;'>Largest number is: $largest</h3>";
+    
 }
 ?>
 
@@ -57,6 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     Enter 3 numbers separated by commas (e.g. 5, 8, 3):<br><br>
     <input type="text" name="numbers" required><br><br>
     <input type="submit" value="Find Largest">
+
+    <h3 style="color: green;"> <?= 'Largest number is: '. $largest; ?></h3>
 </form>
 </body> 
 </html>
