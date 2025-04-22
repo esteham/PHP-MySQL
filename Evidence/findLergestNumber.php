@@ -1,25 +1,26 @@
 <?php
 // If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Getting user input
-    $num1 = $_POST['num1'];
-    $num2 = $_POST['num2'];
-    $num3 = $_POST['num3'];
+    // Get user input (comma-separated numbers)
+    $input = $_POST['numbers'];
 
-    // Determining the largest number
-    if ($num1 >= $num2 && $num1 >= $num3) {
-        echo "<h3 style='text-align: center;'>Largest number is: $num1</h3>";
-    } elseif ($num2 >= $num1 && $num2 >= $num3) {
-        echo "<h3 style='text-align: center;'>Largest number is: $num2</h3>";
-    } else {
-        echo "<h3 style='text-align: center;'>Largest number is: $num3</h3>";
-    }
-    
+    // Split the input into an array by commas
+    $numbers = explode(',', $input);
+
+    // Remove extra spaces around each number
+    $numbers = array_map('trim', $numbers);
+
+    // Convert strings to numbers
+    $numbers = array_map('floatval', $numbers);
+
+    // Find the largest number
+    $largest = max($numbers);
+
+    echo "<h3 style='text-align: center;'>Largest number is: $largest</h3>";
 }
 ?>
 
-
-<!-- HTML form to get user input -->
+<!-- HTML form (single input field) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,9 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <h2>Find the Largest Number</h2>
 <form method="post" action="">
-    Enter First Number: <input type="number" name="num1" required><br><br>
-    Enter Second Number: <input type="number" name="num2" required><br><br>
-    Enter Third Number: <input type="number" name="num3" required><br><br>
+    Enter 3 numbers separated by commas (e.g. 5, 8, 3):<br><br>
+    <input type="text" name="numbers" required><br><br>
     <input type="submit" value="Find Largest">
 </form>
 </body> 
