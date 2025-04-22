@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factorial Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f3;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 200px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Factorial Calculator</h2>
+
+<form method="POST">
+    <input type="number" name="number" min="0" placeholder="Enter a number" required>
+    <input type="submit" value="Calculate">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $num = $_POST['number'];
+    $factorial = 1;
+
+    // Calculate factorial using loop
+    for ($i = 1; $i <= $num; $i++) {
+        $factorial *= $i;
+    }
+
+    // Display the result
+    echo "<div class='result'>Factorial of $num is $factorial.</div>";
+}
+?>
+
+</body>
+</html>
