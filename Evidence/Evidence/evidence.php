@@ -1,156 +1,191 @@
 <?php
-// Database connection
 $host = "localhost";
-$dbname = "student_db";
-$username = "root";
+$dbname = "crud_db";
+$dbuser = "root";
 $password = "";
 
 try {
-	$pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-	// Setting PDO error mode
-	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-	die("Database connection failed: " . $e->getMessage());
+    die("Database connection failed: " . $e->getMessage());
 }
 
-//  Add new student
-if (isset($_POST['add'])) {
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$mobile = $_POST['mobile'];
+$emailError = $phoneError = '';
+$username = $email = $phone = '';
 
-	$stmt = $pdo->prepare("INSERT INTO students (name, email, mobile) VALUES (?, ?, ?)");
-	$stmt->execute([$name, $email, $mobile]);
-}
-
-// Update student
-if (isset($_POST['update'])) {
-	$id = $_POST['id'];
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$mobile = $_POST['mobile'];
-
-	$stmt = $pdo->prepare("UPDATE students SET name=?, email=?, mobile=? WHERE id=?");
-	$stmt->execute([$name, $email, $mobile, $id]);
-}
-
-// Delete student
-if (isset($_GET['delete'])) {
-	$id = $_GET['delete'];
-	$stmt = $pdo->prepare("DELETE FROM students WHERE id=?");
-	$stmt->execute([$id]);
-}
-
-// Load student data for editing
 $editData = null;
-if (isset($_GET['edit'])) {
-	$id = $_GET['edit'];
-	$stmt = $pdo->prepare("SELECT * FROM students WHERE id=?");
-	$stmt->execute([$id]);
-	$editData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Add
+if (isset($_POST['add'])) {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+
+    $valid = true;
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Please enter a valid email address.";
+        $valid = false;
+    }
+    if (!preg_match("/^01[0-9]{9}$/", $phone)) {
+        $phoneError = "Phone number must start with 01 and be exactly 11 digits.";
+        $valid = false;
+    }
+
+    if ($valid) {
+        $stmt = $pdo->prepare("INSERT INTO cruds (username, email, phone) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $email, $phone]);
+        $username = $email = $phone = '';
+    }
 }
 
-// Display all student records
-$stmt = $pdo->query("SELECT * FROM students ORDER BY id DESC");
-$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Update
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+
+    $valid = true;
+
+   if (!preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $email)) 
+    {
+	    $emailError = "Please enter a valid email useing @";
+        $valid = false;
+	}
+
+    if (!preg_match("/^01[0-9]{9}$/", $phone)) {
+        $phoneError = "Phone number must start with 01 and be exactly 11 digits.";
+        $valid = false;
+    }
+
+    if ($valid) {
+        $stmt = $pdo->prepare("UPDATE cruds SET username=?, email=?, phone=? WHERE id=?");
+        $stmt->execute([$username, $email, $phone, $id]);
+        exit;
+    } else {
+        $editData = ['id' => $id, 'username' => $username, 'email' => $email, 'phone' => $phone];
+    }
+}
+
+// Delete
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $stmt = $pdo->prepare("DELETE FROM cruds WHERE id=?");
+    $stmt->execute([$id]);
+}
+
+// Edit
+if (isset($_GET['edit'])) {
+    $id = $_GET['edit'];
+    $stmt = $pdo->prepare("SELECT * FROM cruds WHERE id=?");
+    $stmt->execute([$id]);
+    $editData = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Get all records
+$stmt = $pdo->query("SELECT * FROM cruds ORDER BY id DESC");
+$cruds = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Simple CRUD System</title>
-	<style>
-		body 
-		{ 
-			display: flex; 
-			flex-direction: column; 
-			align-items: center;
-			font-family: Arial; 
-			margin: 30px; 
-			background: #f4f4f4; 
-		}
-		form, table 
-		{ 
-			width: 50%;
-			background: #fff; 
-			padding: 20px; 
-			border-radius: 8px; 
-		}
-		input[type=text], input[type=email] 
-		{ 
-			padding: 8px; 
-			width: 50%; 
-			margin: 8px 0; 
-		}
-		input[type=submit] 
-		{ 
-			padding: 10px 20px; 
-		}
-		table 
-		{ 
-			border-radius: 8px;
-			width: 50%; 
-			border-collapse: collapse; 
-			margin-top: 20px; 
-		}
-		th, td 
-		{ 
-			
-			padding: 10px; 
-			border: 1px solid #ccc; 
-			text-align: center; 
-		}
-		a 
-		{ 
-			text-decoration: none; margin: 0 5px; 
-		}
-	</style>
+    <title>CRUD Management System</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial;
+            margin: 30px;
+            background: #f4f4f4;
+        }
+        form, table {
+            width: 50%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type=text], input[type=email] {
+            padding: 8px;
+            width: 90%;
+            margin: 8px 0 4px 0;
+        }
+        input[type=submit] {
+            padding: 10px 20px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        table {
+            border-radius: 8px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            margin: 0 5px;
+            color: blue;
+        }
+    </style>
 </head>
 <body>
 
-<h2> Student Management</h2>
+<h2>CRUD</h2>
 
-<!-- Form: add or edit -->
+<!-- Form -->
 <form method="post">
-	<input type="hidden" name="id" value="<?= $editData['id'] ?? '' ?>"><br>
-	<label>Name:</label><br>
-	<input type="text" name="name" required value="<?= $editData['name'] ?? '' ?>"><br>
-	
-	<label>Email:</label><br>
-	<input type="email" name="email" required value="<?= $editData['email'] ?? '' ?>"><br>
-	
-	<label>Mobile:</label><br>
-	<input type="text" name="mobile" required value="<?= $editData['mobile'] ?? '' ?>"><br>
+    <input type="hidden" name="id" value="<?= $editData['id'] ?? '' ?>"><br>
 
-	<?php if ($editData): ?><br>
-		<input type="submit" name="update" value="Update">
-		<a href="#">Cancel</a>
-	<?php else: ?>
-		<input type="submit" name="add" value="Add">
-	<?php endif; ?>
+    <label>Username:</label><br>
+    <input type="text" name="username" required value="<?= $editData['username'] ?? $username ?>"><br>
+
+    <label>Email:</label><br>
+    <input type="text" name="email" required value="<?= $editData['email'] ?? $email ?>"><br>
+    <?php if ($emailError): ?><div class="error"><?= $emailError ?></div><?php endif; ?>
+
+    <label>Phone:</label><br>
+    <input type="text" name="phone" required value="<?= $editData['phone'] ?? $phone ?>"><br>
+    <?php if ($phoneError): ?><div class="error"><?= $phoneError ?></div><?php endif; ?>
+
+    <?php if ($editData): ?><br>
+        <input type="submit" name="update" value="Update">
+        <a href="crud.php">Cancel</a>
+    <?php else: ?>
+        <input type="submit" name="add" value="Add">
+    <?php endif; ?>
 </form>
 
-<!--  Data table -->
+<!-- Table -->
 <table>
-	<tr>
-		<th>ID</th>
-		<th>Name</th>
-		<th>Email</th>
-		<th>Mobile</th>
-		<th>Action</th>
-	</tr>
-	<?php foreach ($students as $stu): ?>
-	<tr>
-		<td><?= $stu['id'] ?></td>
-		<td><?= $stu['name'] ?></td>
-		<td><?= $stu['email'] ?></td>
-		<td><?= $stu['mobile'] ?></td>
-		<td>
-			<a href="?edit=<?= $stu['id'] ?>"> Edit</a>
-			<a href="?delete=<?= $stu['id'] ?>" onclick="return confirm('Are you sure you want to delete?')"> Delete</a>
-		</td>
-	</tr>
-	<?php endforeach; ?>
+    <tr>
+
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Action</th>
+    </tr>
+    <?php foreach ($cruds as $stu): ?>
+    <tr>
+        <td><?= $stu['username'] ?></td>
+        <td><?= $stu['email'] ?></td>
+        <td><?= $stu['phone'] ?></td>
+        <td>
+            <a href="?edit=<?= $stu['id'] ?>">Edit</a>
+            <a href="?delete=<?= $stu['id'] ?>" onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
 </table>
 
 </body>
