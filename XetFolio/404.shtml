@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - 404</title>
+    <style>
+        /* Basic reset ও বেসিক স্টাইল */
+        *, *::before, *::after {
+            box-sizing: border-box; /* সহজে লেআউট ম্যানেজ করতে সাহায্য করে */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* হালকা ধূসর ব্যাকগ্রাউন্ড */
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            padding: 2rem; /* আরামদায়ক (comfortable) প্যাডিং */
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 4rem; /* বড় করে দেখাবে */
+            margin: 0;
+        }
+        p {
+            font-size: 1.125rem;
+            margin: 1rem 0;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 0.375rem; /* নরম কোণা */
+            border: 2px solid #007bff;
+            color: #007bff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        a.button:hover, a.button:focus {
+            background-color: #007bff;
+            color: #fff;
+        }
+        /* ছোট স্ক্রিনে টেক্সট কিছুটা ছোট দেখাতে পারে */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 3rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+        }
+        /* সহজ অ্যানিমেশন (animation) */
+        .animate-emoji {
+            display: inline-block;
+            animation: bounce 1.5s infinite;
+            font-size: 2rem;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>404</h1>
+        <p>Oops! The page you’re looking for can’t be found. <span class="animate-emoji">😕</span></p>
+        <p>Maybe the URL is wrong, or the page has been moved or deleted.</p>
+        <a href="/" class="button">Go to Homepage</a>
+    </div>
+</body>
+</html>
